@@ -36,9 +36,42 @@
   <style>html, body { background: #050B08; margin: 0; overscroll-behavior: none; }</style>
   <!-- Telegram Mini App SDK: window.Telegram.WebApp (user, start_param, haptics). -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script>try{Telegram.WebApp.ready();Telegram.WebApp.expand();}catch(e){}</script>
-  <!-- Adsgram rewarded ads SDK: window.Adsgram (used when ADSGRAM_BLOCK_ID is set). -->
-  <script src="https://sad.adsgram.ai/js/sad.min.js" async></script>
+  <script>try{Telegram.WebApp.ready();Telegram.WebApp.expand();}catch(e){}
+  try{if(location.hash&&location.hash.indexOf('tgWebApp')>=0){history.replaceState(null,'',location.pathname+location.search);}}catch(e){}</script>
+  <!-- TADS rewarded fullscreen ads SDK: window.tads (widget 13197). -->
+  <script src="https://w.tads.me/widget.js" async></script>
+  <script>
+    window.QT_TADS_WIDGET_ID = 13197;
+    window.qtShowAd = function () {
+      return new Promise(function (resolve) {
+        var tries = 0, settled = false;
+        function fin(v) { if (!settled) { settled = true; resolve(v); } }
+        (function go() {
+          if (!window.tads || !window.tads.init) {
+            if (tries++ < 40) { return setTimeout(go, 200); }
+            return fin('error: TADS SDK not loaded');
+          }
+          try {
+            window.__qtResolve = fin;
+            if (!window.__qtAd) {
+              window.__qtAd = window.tads.init({
+                widgetId: window.QT_TADS_WIDGET_ID,
+                type: 'fullscreen',
+                debug: false,
+                onShowReward: function () { if (window.__qtResolve) window.__qtResolve('done'); },
+                onAdsNotFound: function () { if (window.__qtResolve) window.__qtResolve('no_ads: No ads available right now'); }
+              });
+            }
+            var p = window.__qtAd.showAd();
+            if (p && p.catch) {
+              p.catch(function (e) { fin('error: ' + (e && (e.message || e.description) || String(e))); });
+            }
+            setTimeout(function () { fin('notdone: Ad was not watched to the end'); }, 120000);
+          } catch (e) { fin('error: ' + (e && e.message || String(e))); }
+        })();
+      });
+    };
+  </script>
 </head>
 <body>
   <div id="qt-loading" style="position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#E8C66A;font-family:sans-serif;font-size:16px;text-align:center;padding:24px">
