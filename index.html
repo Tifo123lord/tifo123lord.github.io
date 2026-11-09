@@ -40,9 +40,11 @@
   try{if(location.hash&&location.hash.indexOf('tgWebApp')>=0){history.replaceState(null,'',location.pathname+location.search);}}catch(e){}</script>
   <!-- TADS rewarded fullscreen ads SDK: window.tads (widget 13197). -->
   <script src="https://w.tads.me/widget.js" async></script>
+  <!-- Adexium fallback (widget 70d1c82b-...), used when TADS has no ad. -->
+  <script src="https://cdn.adexium.tech/assets/js/adexium-widget.min.js" async></script>
   <script>
     window.QT_TADS_WIDGET_ID = 13197;
-    window.qtShowAd = function () {
+    window.__qtShowTads = function () {
       return new Promise(function (resolve) {
         var tries = 0, settled = false;
         function fin(v) { if (!settled) { settled = true; resolve(v); } }
@@ -69,6 +71,37 @@
             setTimeout(function () { fin('notdone: Ad was not watched to the end'); }, 120000);
           } catch (e) { fin('error: ' + (e && e.message || String(e))); }
         })();
+      });
+    };
+  </script>
+  <script>
+    window.QT_ADEXIUM_WID = '70d1c82b-0e3e-4689-ac87-0be3ae488897';
+    window.__qtShowAdexium = function () {
+      return new Promise(function (resolve) {
+        var tries = 0, settled = false, shown = false, completed = false;
+        function fin(v) { if (!settled) { settled = true; resolve(v); } }
+        (function go() {
+          if (!window.AdexiumWidget) {
+            if (tries++ < 40) { return setTimeout(go, 200); }
+            return fin('error: Adexium SDK not loaded');
+          }
+          try {
+            var ax = new window.AdexiumWidget({ wid: window.QT_ADEXIUM_WID, adFormat: 'interstitial' });
+            ax.on('adReceived', function (ad) { ax.displayAd(ad); });
+            ax.on('noAdFound', function () { fin('no_ads: No ads available right now'); });
+            ax.on('adDisplayed', function () { shown = true; });
+            ax.on('adPlaybackCompleted', function () { completed = true; fin('done'); });
+            ax.on('adClosed', function () { fin(completed || shown ? 'done' : 'notdone: Ad closed'); });
+            ax.requestAd('interstitial');
+            setTimeout(function () { fin('notdone: Ad timed out'); }, 120000);
+          } catch (e) { fin('error: ' + (e && e.message || String(e))); }
+        })();
+      });
+    };
+    window.qtShowAd = function () {
+      return window.__qtShowTads().then(function (r) {
+        if (r === 'done' || String(r).indexOf('notdone') === 0) return r;
+        return window.__qtShowAdexium().then(function (r2) { return r2 === 'done' ? r2 : r2; });
       });
     };
   </script>
