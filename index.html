@@ -75,7 +75,7 @@
   </script>
   <script>
     window.QT_ADEXIUM_WID = '72174f6c-0b96-4e47-a840-fd5b67641b3d';
-    window.__qtShowAdexium = function () {
+    window.__qtAdexiumOnce = function (fmt, motivated) {
       return new Promise(function (resolve) {
         var tries = 0, settled = false, shown = false, completed = false;
         function fin(v) { if (!settled) { settled = true; resolve(v); } }
@@ -85,17 +85,32 @@
             return fin('error: Adexium SDK not loaded');
           }
           try {
-            var ax = new window.AdexiumWidget({ wid: window.QT_ADEXIUM_WID, adFormat: 'interstitial' });
+            var ax = new window.AdexiumWidget({ wid: window.QT_ADEXIUM_WID, adFormat: fmt });
             ax.on('adReceived', function (ad) { ax.displayAd(ad); });
             ax.on('noAdFound', function () { fin('no_ads: No ads available right now'); });
+            ax.on('requestAdError', function () { fin('no_ads: request failed'); });
             ax.on('adDisplayed', function () { shown = true; });
             ax.on('adPlaybackCompleted', function () { completed = true; fin('done'); });
             ax.on('adClosed', function () { fin(completed || shown ? 'done' : 'notdone: Ad closed'); });
-            ax.requestAd('interstitial');
-            setTimeout(function () { fin('notdone: Ad timed out'); }, 120000);
+            if (motivated && ax.requestRewardedAd) ax.requestRewardedAd(fmt); else ax.requestAd(fmt);
+            setTimeout(function () { fin(shown ? 'notdone: Ad timed out' : 'no_ads: timeout'); }, 120000);
           } catch (e) { fin('error: ' + (e && e.message || String(e))); }
         })();
       });
+    };
+    window.__qtShowAdexium = function () {
+      // Try rewarded first, then the other formats, until one has an ad.
+      var plan = [['interstitial', true], ['video', true], ['interstitial', false], ['video', false], ['push-like', false]];
+      var i = 0, last = 'no_ads: No ads available right now';
+      function next() {
+        if (i >= plan.length) return Promise.resolve(last);
+        var st = plan[i++];
+        return window.__qtAdexiumOnce(st[0], st[1]).then(function (r) {
+          if (String(r).indexOf('no_ads') === 0 || String(r).indexOf('error') === 0) { last = r; return next(); }
+          return r;
+        });
+      }
+      return next();
     };
     window.qtShowAd = function () {
       // TADS rejected the app (prohibited format), so Adexium only.
