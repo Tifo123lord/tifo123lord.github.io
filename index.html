@@ -39,8 +39,7 @@
   <script>try{Telegram.WebApp.ready();Telegram.WebApp.expand();}catch(e){}
   try{if(location.hash&&location.hash.indexOf('tgWebApp')>=0){history.replaceState(null,'',location.pathname+location.search);}}catch(e){}</script>
   <!-- TADS rewarded fullscreen ads SDK: window.tads (widget 13197). -->
-  <script src="https://w.tads.me/widget.js" async></script>
-  <!-- Adexium fallback (widget 70d1c82b-...), used when TADS has no ad. -->
+    <!-- Adexium fallback (widget 70d1c82b-...), used when TADS has no ad. -->
   <script src="https://cdn.adexium.tech/assets/js/adexium-widget.min.js" async></script>
   <script>
     window.QT_TADS_WIDGET_ID = 13197;
@@ -99,10 +98,8 @@
       });
     };
     window.qtShowAd = function () {
-      return window.__qtShowTads().then(function (r) {
-        if (r === 'done' || String(r).indexOf('notdone') === 0) return r;
-        return window.__qtShowAdexium().then(function (r2) { return r2 === 'done' ? r2 : r2; });
-      });
+      // TADS rejected the app (prohibited format), so Adexium only.
+      return window.__qtShowAdexium();
     };
   </script>
   <script>
