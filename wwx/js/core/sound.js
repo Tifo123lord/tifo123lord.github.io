@@ -6,6 +6,8 @@ export const soundOn = () => enabled;
 /** @param {boolean} v */
 export const setSound = (v) => { enabled = v; localStorage.setItem("wwx_sound", v ? "1" : "0"); };
 function ac() {
+  // Browsers only allow audio after a user gesture; skip silently until then.
+  const ua = /** @type {any} */ (navigator).userActivation; if (ua && !ua.hasBeenActive) return null;
   if (!ctx) { const C = window.AudioContext || /** @type {any} */ (window).webkitAudioContext; if (!C) return null; ctx = new C(); }
   if (ctx.state === "suspended") ctx.resume(); return ctx;
 }
