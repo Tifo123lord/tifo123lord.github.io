@@ -41,6 +41,8 @@
   <!-- TADS rewarded fullscreen ads SDK: window.tads (widget 13197). -->
     <!-- Adexium fallback (widget 70d1c82b-...), used when TADS has no ad. -->
   <script src="https://cdn.adexium.tech/assets/js/adexium-widget.min.js" async></script>
+  <!-- GigaPub (app 9067), fallback when Adexium has no ad. -->
+  <script src="https://ad.gigapub.tech/script?id=9067" async></script>
   <script>
     window.QT_TADS_WIDGET_ID = 13197;
     window.__qtShowTads = function () {
@@ -112,9 +114,33 @@
       }
       return next();
     };
+    window.__qtShowGiga = function () {
+      return new Promise(function (resolve) {
+        var tries = 0, settled = false;
+        function fin(v) { if (!settled) { settled = true; resolve(v); } }
+        (function go() {
+          if (typeof window.showGiga !== 'function') {
+            if (tries++ < 40) { return setTimeout(go, 200); }
+            return fin('error: GigaPub SDK not loaded');
+          }
+          try {
+            window.showGiga().then(function () { fin('done'); })
+              .catch(function (e) { fin('no_ads: ' + (e && (e.message || e) || 'GigaPub no ad')); });
+            setTimeout(function () { fin('notdone: Ad timed out'); }, 120000);
+          } catch (e) { fin('error: ' + (e && e.message || String(e))); }
+        })();
+      });
+    };
     window.qtShowAd = function () {
-      // TADS rejected the app (prohibited format), so Adexium only.
-      return window.__qtShowAdexium();
+      // TADS rejected the app. Adexium first, then GigaPub.
+      return window.__qtShowAdexium().then(function (r) {
+        if (String(r).indexOf('no_ads') === 0 || String(r).indexOf('error') === 0) {
+          return window.__qtShowGiga().then(function (g) {
+            return (String(g).indexOf('error') === 0) ? r : g;
+          });
+        }
+        return r;
+      });
     };
   </script>
   <script>
