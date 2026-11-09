@@ -72,6 +72,24 @@
       });
     };
   </script>
+  <script>
+    // Shim: the Flutter build calls window.Adsgram.init({blockId}).show(); route it to TADS.
+    window.Adsgram = {
+      init: function () {
+        return {
+          show: function () {
+            return window.qtShowAd().then(function (r) {
+              if (r === 'done') return { done: true, state: 'load', description: 'Ad watched' };
+              var i = String(r).indexOf(':');
+              var st = i > 0 ? String(r).slice(0, i) : String(r);
+              var d = i > 0 ? String(r).slice(i + 1).trim() : String(r);
+              return { done: false, state: st, description: d };
+            });
+          }
+        };
+      }
+    };
+  </script>
 </head>
 <body>
   <div id="qt-loading" style="position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#E8C66A;font-family:sans-serif;font-size:16px;text-align:center;padding:24px">
