@@ -40,7 +40,7 @@
   try{if(location.hash&&location.hash.indexOf('tgWebApp')>=0){history.replaceState(null,'',location.pathname+location.search);}}catch(e){}</script>
   <!-- TADS rewarded fullscreen ads SDK: window.tads (widget 13197). -->
     <!-- Adexium fallback (widget 70d1c82b-...), used when TADS has no ad. -->
-  <script src="https://cdn.adexium.tech/assets/js/adexium-widget.min.js" async></script>
+  <!-- Adexium disabled 2026-11-09 at user request. -->
   <!-- GigaPub (app 9067), fallback when Adexium has no ad. -->
   <script src="https://ad.gigapub.tech/script?id=9067" async></script>
   <script>
@@ -132,14 +132,9 @@
       });
     };
     window.qtShowAd = function () {
-      // TADS rejected the app. Adexium first, then GigaPub.
-      return window.__qtShowAdexium().then(function (r) {
-        if (String(r).indexOf('no_ads') === 0 || String(r).indexOf('error') === 0) {
-          return window.__qtShowGiga().then(function (g) {
-            return (String(g).indexOf('error') === 0) ? r : g;
-          });
-        }
-        return r;
+      // Adexium disabled at user request; GigaPub only.
+      return window.__qtShowGiga().then(function (g) {
+        return (String(g).indexOf('error') === 0) ? 'no_ads: ' + g : g;
       });
     };
   </script>
