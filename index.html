@@ -85,7 +85,7 @@
             return fin('error: Adexium SDK not loaded');
           }
           try {
-            var ax = new window.AdexiumWidget({ wid: window.QT_ADEXIUM_WID, adFormat: 'interstitial', debug: true /* TEST MODE - remove */ });
+            var ax = new window.AdexiumWidget({ wid: window.QT_ADEXIUM_WID, adFormat: 'interstitial' });
             ax.on('adReceived', function (ad) { ax.displayAd(ad); });
             ax.on('noAdFound', function () { fin('no_ads: No ads available right now'); });
             ax.on('adDisplayed', function () { shown = true; });
