@@ -1,12 +1,12 @@
 // @ts-check
-import { S, subscribe, affordable } from "../core/store.js?v=2";
-import { RES_KEYS } from "../core/config.js?v=2";
-import { icon, resIcon, entIcon } from "../ui/icons.js?v=2";
-import { t, num, short, nm, desc, dur } from "../core/i18n.js?v=2";
-import { notify } from "../core/tg.js?v=2";
-import { h, n, btn, live } from "../ui/dom.js?v=2";
-import { act, costView, queueBar } from "../ui/common.js?v=2";
-import { commanderCard, openAchievements } from "../ui/profile.js?v=2";
+import { S, subscribe, affordable } from "../core/store.js?v=3";
+import { RES_KEYS } from "../core/config.js?v=3";
+import { icon, resIcon, entIcon } from "../ui/icons.js?v=3";
+import { t, num, short, nm, desc, dur } from "../core/i18n.js?v=3";
+import { notify } from "../core/tg.js?v=3";
+import { h, n, btn, live } from "../ui/dom.js?v=3";
+import { act, costView, queueBar } from "../ui/common.js?v=3";
+import { commanderCard, openAchievements } from "../ui/profile.js?v=3";
 
 /** @param {HTMLElement} root */
 export function baseScreen(root) {

@@ -1,12 +1,12 @@
 // @ts-check
-import { S, subscribe, liveRes } from "../core/store.js?v=2";
-import { t, num, short, nm, dur, ago } from "../core/i18n.js?v=2";
-import { notify, tick } from "../core/tg.js?v=2";
-import { api } from "../core/api.js?v=2";
-import { h, n, btn, live, empty } from "../ui/dom.js?v=2";
-import { act, costView, queueBar, flagOf, unitList, errMsg } from "../ui/common.js?v=2";
-import { showReport } from "../ui/battle.js?v=2";
-import { icon, entIcon, unitArt } from "../ui/icons.js?v=2";
+import { S, subscribe, liveRes } from "../core/store.js?v=3";
+import { t, num, short, nm, dur, ago } from "../core/i18n.js?v=3";
+import { notify, tick } from "../core/tg.js?v=3";
+import { api } from "../core/api.js?v=3";
+import { h, n, btn, live, empty } from "../ui/dom.js?v=3";
+import { act, costView, queueBar, flagOf, unitList, errMsg } from "../ui/common.js?v=3";
+import { showReport } from "../ui/battle.js?v=3";
+import { icon, entIcon, unitPhoto } from "../ui/icons.js?v=3";
 
 /** Max units affordable right now. */
 function maxAffordable(u) {
@@ -36,7 +36,7 @@ export function armyScreen(root) {
       const set = (v) => { tick(); amounts[u.id] = Math.max(1, v); inp.value = String(amounts[u.id]); costEl.replaceChildren(costView(mult(u.cost, amounts[u.id]))); };
       const counters = u.counters.map((c) => entIcon(S.cfg.UNITS.find((x) => x.id === c)));
       return h("div.card.unitcard.cat-" + u.cat + (!reqOk ? ".locked" : ""), null,
-        h("div.unit-banner", null, unitArt(u.id),
+        h("div.unit-banner.has-photo", null, unitPhoto(u.id), h("div.unit-shade"),
           h("div.unit-title", null, h("b.icrow", null, entIcon(u), nm(u)), h("div.tiny.counter-chip.icrow", null, t("strong_vs"), " ", counters),
             h("span.pill.owned", null, t("owned"), " ", n(short(owned))))),
         h("div.stats", null, h("span.stat", null, icon("sword"), n(u.atk)), h("span.stat", null, icon("shield"), n(u.def)), h("span.stat", null, icon("heart"), n(u.hp)), h("span.stat", null, icon("box"), n(u.carry)), h("span.stat", null, icon("clock"), n(dur(m.unitTimes[u.id])))),

@@ -1,12 +1,12 @@
 // @ts-check
-import { S, subscribe } from "../core/store.js?v=2";
-import { t, num, short, dur } from "../core/i18n.js?v=2";
-import { api } from "../core/api.js?v=2";
-import { notify, confirmBox } from "../core/tg.js?v=2";
-import { h, n, btn, sheet, closeRow, empty, live, toast } from "../ui/dom.js?v=2";
-import { act, flagOf, errMsg, costView } from "../ui/common.js?v=2";
-import { openAttack } from "../ui/battle.js?v=2";
-import { icon } from "../ui/icons.js?v=2";
+import { S, subscribe } from "../core/store.js?v=3";
+import { t, num, short, dur } from "../core/i18n.js?v=3";
+import { api } from "../core/api.js?v=3";
+import { notify, confirmBox } from "../core/tg.js?v=3";
+import { h, n, btn, sheet, closeRow, empty, live, toast } from "../ui/dom.js?v=3";
+import { act, flagOf, errMsg, costView } from "../ui/common.js?v=3";
+import { openAttack } from "../ui/battle.js?v=3";
+import { icon } from "../ui/icons.js?v=3";
 
 let kind = "power";
 /** Rank badge: gold/silver/bronze medallions for the podium, a plain number after. */
@@ -63,7 +63,7 @@ function createAlliance() {
     return [h("div.h1", null, icon("flag"), t("create_alliance")), name, tag, dsc, h("div.small.muted", { style: { marginTop: "8px" } }, costView(S.cfg.RULES.allianceCost)),
       btn([icon("flag"), t("create_alliance")], "success block lg", async () => {
         await act("ally_create", { name: /** @type {any} */ (name).value, tag: /** @type {any} */ (tag).value, desc: /** @type {any} */ (dsc).value }, { okSound: "levelup" });
-        notify("success"); close(); (await import("../core/store.js?v=2")).emit("ally");
+        notify("success"); close(); (await import("../core/store.js?v=3")).emit("ally");
       }, { style: "margin-top:12px" }), closeRow(close)];
   });
 }
@@ -72,7 +72,7 @@ function createAlliance() {
 export async function openAlliance(id) {
   let d; try { d = await api("alliance", { id }); } catch (e) { toast(errMsg(e), "err"); return; }
   const m = S.me, mine = m.alliance_id === id, owner = d.alliance.owner === m.id;
-  const { emit } = await import("../core/store.js?v=2");
+  const { emit } = await import("../core/store.js?v=3");
   sheet((close) => {
     const reopen = () => { close(); emit("ally"); openAlliance(id); };
     const treaties = d.treaties.map((x) => {

@@ -200,6 +200,19 @@ export function unitArt(id) {
   const u = document.createElementNS(NS, "use"); u.setAttribute("href", `#a-${ART[id] ? id : "infantry"}`); s.append(u);
   return s;
 }
+/** Photo URL for a unit (realistic art, webp). @param {string} id */
+export const unitPhotoUrl = (id) => `./img/units/${id}.webp?v=3`;
+/**
+ * Realistic unit photo as a cover image; falls back to the SVG silhouette if it fails to load.
+ * Never mirrored in RTL. @param {string} id @param {string} [cls]
+ */
+export function unitPhoto(id, cls = "unit-photo") {
+  const img = document.createElement("img");
+  img.className = cls; img.alt = ""; img.loading = "lazy"; img.decoding = "async"; img.draggable = false;
+  img.onerror = () => { const host = img.parentElement; host?.classList.remove("has-photo"); host?.classList.add("no-photo"); img.replaceWith(cls === "unit-photo" ? unitArt(id) : icon(BY_ID[id] || "helmet")); };
+  img.src = unitPhotoUrl(id);
+  return img;
+}
 /** Icon for an emoji/UI name, tolerant: accepts an icon name or an emoji. @param {string} x */
 export const ico = (x, cls = "") => icon(I[x] ? x : emojiName(x) || "star", cls);
 

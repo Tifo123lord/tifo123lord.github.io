@@ -1,23 +1,23 @@
 // @ts-check
 /** World War X — Mini App entry: boot, auth, shell, tabs, polling, deep links. */
-import { fetchConfig, api, onConnectivity } from "./core/api.js?v=2";
-import { S, setMe, subscribe, emit } from "./core/store.js?v=2";
-import { initTelegram, inTelegram, haptic, tgUser } from "./core/tg.js?v=2";
-import { t, setLang, getLang, errText } from "./core/i18n.js?v=2";
-import { sfx } from "./core/sound.js?v=2";
-import { BOT_URL, POLL_ME_MS } from "./core/config.js?v=2";
-import { registerRouter } from "./core/router.js?v=2";
-import { h, toast } from "./ui/dom.js?v=2";
-import { icon } from "./ui/icons.js?v=2";
-import { errMsg } from "./ui/common.js?v=2";
-import { topbar } from "./ui/topbar.js?v=2";
-import { picker } from "./ui/picker.js?v=2";
-import { openBattleById } from "./ui/battle.js?v=2";
-import { mapScreen } from "./screens/map.js?v=2";
-import { baseScreen } from "./screens/base.js?v=2";
-import { armyScreen } from "./screens/army.js?v=2";
-import { researchScreen } from "./screens/research.js?v=2";
-import { rankScreen } from "./screens/rank.js?v=2";
+import { fetchConfig, api, onConnectivity } from "./core/api.js?v=3";
+import { S, setMe, subscribe, emit } from "./core/store.js?v=3";
+import { initTelegram, inTelegram, haptic, tgUser } from "./core/tg.js?v=3";
+import { t, setLang, getLang, errText } from "./core/i18n.js?v=3";
+import { sfx } from "./core/sound.js?v=3";
+import { BOT_URL, POLL_ME_MS } from "./core/config.js?v=3";
+import { registerRouter } from "./core/router.js?v=3";
+import { h, toast } from "./ui/dom.js?v=3";
+import { icon } from "./ui/icons.js?v=3";
+import { errMsg } from "./ui/common.js?v=3";
+import { topbar } from "./ui/topbar.js?v=3";
+import { picker } from "./ui/picker.js?v=3";
+import { openBattleById } from "./ui/battle.js?v=3";
+import { mapScreen } from "./screens/map.js?v=3";
+import { baseScreen } from "./screens/base.js?v=3";
+import { armyScreen } from "./screens/army.js?v=3";
+import { researchScreen } from "./screens/research.js?v=3";
+import { rankScreen } from "./screens/rank.js?v=3";
 
 const app = /** @type {HTMLElement} */ (document.getElementById("app"));
 const TABS = [

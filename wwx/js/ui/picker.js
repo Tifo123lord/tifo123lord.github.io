@@ -1,11 +1,11 @@
 // @ts-check
-import { S } from "../core/store.js?v=2";
-import { t, nm, getLang } from "../core/i18n.js?v=2";
-import { tick, notify, mainButton } from "../core/tg.js?v=2";
-import { sfx } from "../core/sound.js?v=2";
-import { h, btn, toast } from "./dom.js?v=2";
-import { act, bonusText } from "./common.js?v=2";
-import { icon, flagImg } from "./icons.js?v=2";
+import { S } from "../core/store.js?v=3";
+import { t, nm, getLang } from "../core/i18n.js?v=3";
+import { tick, notify, mainButton } from "../core/tg.js?v=3";
+import { sfx } from "../core/sound.js?v=3";
+import { h, btn, toast } from "./dom.js?v=3";
+import { act, bonusText } from "./common.js?v=3";
+import { icon, flagImg } from "./icons.js?v=3";
 
 /** Country selection onboarding. Resolves when the player exists. @param {HTMLElement} root */
 export function picker(root) {

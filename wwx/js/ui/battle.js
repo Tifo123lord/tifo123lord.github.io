@@ -1,14 +1,14 @@
 // @ts-check
-import { S, emit } from "../core/store.js?v=2";
-import { CENTROIDS } from "../core/config.js?v=2";
-import { t, num, short, nm, dur, errText } from "../core/i18n.js?v=2";
-import { haptic, notify, confirmBox } from "../core/tg.js?v=2";
-import { sfx } from "../core/sound.js?v=2";
-import { goTab } from "../core/router.js?v=2";
-import { api } from "../core/api.js?v=2";
-import { h, n, btn, sheet, closeRow, toast, empty } from "./dom.js?v=2";
-import { act, flagOf, countryName, unitList, costView, errMsg } from "./common.js?v=2";
-import { icon, iconHTML, entIcon, resIcon, unitArt } from "./icons.js?v=2";
+import { S, emit } from "../core/store.js?v=3";
+import { CENTROIDS } from "../core/config.js?v=3";
+import { t, num, short, nm, dur, errText } from "../core/i18n.js?v=3";
+import { haptic, notify, confirmBox } from "../core/tg.js?v=3";
+import { sfx } from "../core/sound.js?v=3";
+import { goTab } from "../core/router.js?v=3";
+import { api } from "../core/api.js?v=3";
+import { h, n, btn, sheet, closeRow, toast, empty } from "./dom.js?v=3";
+import { act, flagOf, countryName, unitList, costView, errMsg } from "./common.js?v=3";
+import { icon, iconHTML, entIcon, resIcon, unitPhoto } from "./icons.js?v=3";
 
 /** Estimated attack power of a selection (display only; the server simulates the real battle). */
 function estPower(sel) { return Object.entries(sel).reduce((p, [u, c]) => p + c * (S.cfg.UNITS.find((x) => x.id === u)?.atk ?? 0), 0); }
@@ -25,7 +25,7 @@ export function openAttack(target) {
       const own = Math.floor(m.units[u.id]);
       const val = h("span.num", null, num(sel[u.id]));
       const sl = h("input.slider", { type: "range", min: 0, max: own, value: own, oninput: (e) => { sel[u.id] = Number(e.target.value); val.textContent = num(sel[u.id]); upd(); } });
-      return h("div.li.selrow", null, h("div.ico.sm.red", null, entIcon(u)),
+      return h("div.li.selrow", null, h("div.unit-thumb.has-photo", null, unitPhoto(u.id, "unit-thumb-img")),
         h("div.grow", null, h("div.row.sb", null, h("b.small", null, nm(u)), h("span.small", null, val, " / ", n(own))), sl));
     });
     upd();
@@ -169,7 +169,7 @@ export function showReport(rep) {
       h("div.card", null, h("table.utable", null,
         h("tr", null, h("th", null, ""), h("th", null, flagOf(rep.att.country), " ", t("sent")), h("th", null, t("lost")), h("th", null, flagOf(rep.def.country), " ", t("had")), h("th", null, t("lost"))),
         ids.map((id) => { const u = S.cfg.UNITS.find((x) => x.id === id);
-          return h("tr", null, h("td.icrow", null, entIcon(u), nm(u)), h("td", null, n(num(rep.att.sent[id] || 0))), h("td.red", null, n(num(rep.att.lost[id] || 0))),
+          return h("tr", null, h("td.icrow", null, h("span.unit-thumb.xs.has-photo", null, unitPhoto(u.id, "unit-thumb-img")), nm(u)), h("td", null, n(num(rep.att.sent[id] || 0))), h("td.red", null, n(num(rep.att.lost[id] || 0))),
             h("td", null, n(num(rep.def.had[id] || 0))), h("td.red", null, n(num(rep.def.lost[id] || 0)))); }))),
       h("div.grid2", { style: { marginTop: "10px" } },
         h("div.card", null, h("div.small.muted.icrow", null, icon("box"), t("loot")), lootTotal ? costView(rep.loot) : h("div.dim", null, "—")),

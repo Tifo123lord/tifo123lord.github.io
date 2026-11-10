@@ -1,11 +1,11 @@
 // @ts-check
-import { S, emit } from "../core/store.js?v=2";
-import { t, num, short, getLang, setLang, ago, dur, nm, desc } from "../core/i18n.js?v=2";
-import { soundOn, setSound, sfx } from "../core/sound.js?v=2";
-import { notify } from "../core/tg.js?v=2";
-import { h, n, btn, sheet, closeRow, empty, live } from "./dom.js?v=2";
-import { act, flagOf, countryName, bonusText, unitList, costView } from "./common.js?v=2";
-import { icon, resIcon, entIcon } from "./icons.js?v=2";
+import { S, emit } from "../core/store.js?v=3";
+import { t, num, short, getLang, setLang, ago, dur, nm, desc } from "../core/i18n.js?v=3";
+import { soundOn, setSound, sfx } from "../core/sound.js?v=3";
+import { notify } from "../core/tg.js?v=3";
+import { h, n, btn, sheet, closeRow, empty, live } from "./dom.js?v=3";
+import { act, flagOf, countryName, bonusText, unitList, costView } from "./common.js?v=3";
+import { icon, resIcon, entIcon } from "./icons.js?v=3";
 
 export function commanderCard() {
   const m = S.me;

@@ -1,17 +1,17 @@
 // @ts-check
-import { S, subscribe } from "../core/store.js?v=2";
-import { CENTROIDS } from "../core/config.js?v=2";
-import { t, num, short, nm, desc, dur, ago } from "../core/i18n.js?v=2";
-import { api } from "../core/api.js?v=2";
-import { tick } from "../core/tg.js?v=2";
-import { sfx } from "../core/sound.js?v=2";
-import { h, n, btn, sheet, closeRow, empty, live } from "../ui/dom.js?v=2";
-import { flagOf, countryName, bonusText, errMsg } from "../ui/common.js?v=2";
-import { openAttack, doSpy } from "../ui/battle.js?v=2";
-import { icon, entIcon, flagImg } from "../ui/icons.js?v=2";
+import { S, subscribe } from "../core/store.js?v=3";
+import { CENTROIDS } from "../core/config.js?v=3";
+import { t, num, short, nm, desc, dur, ago } from "../core/i18n.js?v=3";
+import { api } from "../core/api.js?v=3";
+import { tick } from "../core/tg.js?v=3";
+import { sfx } from "../core/sound.js?v=3";
+import { h, n, btn, sheet, closeRow, empty, live } from "../ui/dom.js?v=3";
+import { flagOf, countryName, bonusText, errMsg } from "../ui/common.js?v=3";
+import { openAttack, doSpy } from "../ui/battle.js?v=3";
+import { icon, entIcon, flagImg } from "../ui/icons.js?v=3";
 
 let mapSvgText = "";
-async function loadMap() { if (!mapSvgText) mapSvgText = await fetch("./map.svg?v=2").then((r) => r.text()); return mapSvgText; }
+async function loadMap() { if (!mapSvgText) mapSvgText = await fetch("./map.svg?v=3").then((r) => r.text()); return mapSvgText; }
 
 /** News item → one line of nodes (icons + bidi-isolated names) so mixed fa/en text stays in order. */
 function newsLine(x) {

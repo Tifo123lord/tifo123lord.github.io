@@ -1,6 +1,6 @@
 // @ts-check
-import { API_URL } from "./config.js?v=2";
-import { initData } from "./tg.js?v=2";
+import { API_URL } from "./config.js?v=3";
+import { initData } from "./tg.js?v=3";
 
 /** Consistent client error: `code` mirrors the server's GameError codes. */
 export class ApiError extends Error {

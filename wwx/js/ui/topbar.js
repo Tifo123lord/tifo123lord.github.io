@@ -1,12 +1,12 @@
 // @ts-check
-import { S, liveRes, subscribe } from "../core/store.js?v=2";
-import { RES_KEYS } from "../core/config.js?v=2";
-import { resIcon, icon } from "./icons.js?v=2";
-import { short } from "../core/i18n.js?v=2";
-import { h } from "./dom.js?v=2";
-import { flagOf } from "./common.js?v=2";
-import { openProfile } from "./profile.js?v=2";
-import { openNotifications } from "./profile.js?v=2";
+import { S, liveRes, subscribe } from "../core/store.js?v=3";
+import { RES_KEYS } from "../core/config.js?v=3";
+import { resIcon, icon } from "./icons.js?v=3";
+import { short } from "../core/i18n.js?v=3";
+import { h } from "./dom.js?v=3";
+import { flagOf } from "./common.js?v=3";
+import { openProfile } from "./profile.js?v=3";
+import { openNotifications } from "./profile.js?v=3";
 
 /** Persistent top bar with live-ticking resources. */
 export function topbar() {

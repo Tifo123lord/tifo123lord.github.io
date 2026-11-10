@@ -1,11 +1,11 @@
 // @ts-check
-import { api, ApiError } from "../core/api.js?v=2";
-import { S, setMe, liveRes, countryOf } from "../core/store.js?v=2";
-import { errText, short, t, nm, dur } from "../core/i18n.js?v=2";
-import { notify } from "../core/tg.js?v=2";
-import { sfx } from "../core/sound.js?v=2";
-import { h, n, toast } from "./dom.js?v=2";
-import { resIcon, flagImg, entIcon } from "./icons.js?v=2";
+import { api, ApiError } from "../core/api.js?v=3";
+import { S, setMe, liveRes, countryOf } from "../core/store.js?v=3";
+import { errText, short, t, nm, dur } from "../core/i18n.js?v=3";
+import { notify } from "../core/tg.js?v=3";
+import { sfx } from "../core/sound.js?v=3";
+import { h, n, toast } from "./dom.js?v=3";
+import { resIcon, flagImg, entIcon } from "./icons.js?v=3";
 
 /**
  * Runs a server action, applies the returned `me`, and surfaces errors uniformly.

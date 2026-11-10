@@ -1,10 +1,10 @@
 // @ts-check
-import { S, subscribe, affordable } from "../core/store.js?v=2";
-import { t, nm, desc, dur, num } from "../core/i18n.js?v=2";
-import { notify } from "../core/tg.js?v=2";
-import { h, n, btn, live } from "../ui/dom.js?v=2";
-import { act, costView, queueBar } from "../ui/common.js?v=2";
-import { icon, entIcon } from "../ui/icons.js?v=2";
+import { S, subscribe, affordable } from "../core/store.js?v=3";
+import { t, nm, desc, dur, num } from "../core/i18n.js?v=3";
+import { notify } from "../core/tg.js?v=3";
+import { h, n, btn, live } from "../ui/dom.js?v=3";
+import { act, costView, queueBar } from "../ui/common.js?v=3";
+import { icon, entIcon } from "../ui/icons.js?v=3";
 
 /** @param {HTMLElement} root */
 export function researchScreen(root) {
