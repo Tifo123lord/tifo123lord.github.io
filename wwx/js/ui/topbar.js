@@ -1,21 +1,22 @@
 // @ts-check
-import { S, liveRes, subscribe } from "../core/store.js";
-import { RES_KEYS, RES_ICON } from "../core/config.js";
-import { short } from "../core/i18n.js";
-import { h } from "./dom.js";
-import { flagOf } from "./common.js";
-import { openProfile } from "./profile.js";
-import { openNotifications } from "./profile.js";
+import { S, liveRes, subscribe } from "../core/store.js?v=2";
+import { RES_KEYS } from "../core/config.js?v=2";
+import { resIcon, icon } from "./icons.js?v=2";
+import { short } from "../core/i18n.js?v=2";
+import { h } from "./dom.js?v=2";
+import { flagOf } from "./common.js?v=2";
+import { openProfile } from "./profile.js?v=2";
+import { openNotifications } from "./profile.js?v=2";
 
 /** Persistent top bar with live-ticking resources. */
 export function topbar() {
   const vals = {}, bars = {}, boxes = {};
   const resEls = RES_KEYS.map((r) => {
     vals[r] = h("div.v.num"); bars[r] = h("div.bar");
-    return (boxes[r] = h("div.res", null, h("div.i", null, RES_ICON[r]), vals[r], bars[r]));
+    return (boxes[r] = h("div.res.r-" + r, null, h("div.i", null, resIcon(r)), vals[r], bars[r]));
   });
   const av = h("button.avatar", { onclick: openProfile, "aria-label": "profile" });
-  const bell = h("button.iconbtn", { onclick: openNotifications, "aria-label": "events" }, "🔔");
+  const bell = h("button.iconbtn", { onclick: openNotifications, "aria-label": "events" }, icon("bell"));
   const el = h("div.topbar", null, av, h("div.resrow", null, resEls), bell);
   let last = {};
   const paint = () => {

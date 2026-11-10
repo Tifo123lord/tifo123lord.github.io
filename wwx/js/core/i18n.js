@@ -7,6 +7,7 @@ let lang = /** @type {Lang} */ (localStorage.getItem("wwx_lang") || "fa");
 
 const fa = {
   tab_map: "نقشه", tab_base: "پایگاه", tab_army: "ارتش", tab_research: "تحقیق", tab_rank: "رتبه",
+  lg_mine: "کشور شما", lg_active: "فعال", lg_hot: "جبهه داغ", lg_sel: "انتخاب",
   pick_title: "کشورت را انتخاب کن", pick_sub: "هر کشور یک امتیاز ویژه دارد. انتخاب نهایی است.", pick_cta: "اعلام استقلال", pick_need: "یک کشور انتخاب کن",
   world_event: "رویداد جهانی", ends_in: "پایان در", next: "بعدی", live: "زنده", world_news: "اخبار جهان", no_news: "هنوز خبری نیست. اولین تاریخ‌ساز باش!",
   players: "فرمانده", tap_country: "روی یک کشور بزن تا فرماندهانش را ببینی", targets: "اهداف پیشنهادی", find_targets: "یافتن هدف",
@@ -38,6 +39,7 @@ const fa = {
 /** @type {Record<keyof typeof fa, string>} */
 const en = {
   tab_map: "Map", tab_base: "Base", tab_army: "Army", tab_research: "Research", tab_rank: "Ranking",
+  lg_mine: "Your nation", lg_active: "Active", lg_hot: "Hotspot", lg_sel: "Selected",
   pick_title: "Choose your nation", pick_sub: "Every nation has a unique bonus. This choice is final.", pick_cta: "Declare independence", pick_need: "Pick a nation",
   world_event: "World event", ends_in: "Ends in", next: "Next", live: "LIVE", world_news: "World news", no_news: "No news yet. Make history!",
   players: "commanders", tap_country: "Tap a country to see its commanders", targets: "Suggested targets", find_targets: "Find targets",

@@ -1,7 +1,8 @@
 // @ts-check
-import { haptic, pushBack } from "../core/tg.js";
-import { sfx } from "../core/sound.js";
-import { t, num } from "../core/i18n.js";
+import { haptic, pushBack } from "../core/tg.js?v=2";
+import { sfx } from "../core/sound.js?v=2";
+import { t, num } from "../core/i18n.js?v=2";
+import { ico } from "./icons.js?v=2";
 
 /**
  * Tiny hyperscript. h("div.card#x", {onclick}, children...)
@@ -74,5 +75,6 @@ export function live(endMs, fmt) {
   queueMicrotask(upd); setTimeout(upd, 0);
   return el;
 }
-export const empty = (icon, text) => h("div.empty", null, h("div.e", null, icon), text);
+/** Empty state. `icon` is an icon name, an emoji, or a Node. */
+export const empty = (icon, text) => h("div.empty", null, h("div.e", null, typeof icon === "string" ? ico(icon) : icon), h("div", null, text));
 export const closeRow = (close) => h("div.row", { style: { marginTop: "14px" } }, btn(t("close"), "ghost block", close));

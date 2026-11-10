@@ -1,34 +1,35 @@
 // @ts-check
 /** World War X — Mini App entry: boot, auth, shell, tabs, polling, deep links. */
-import { fetchConfig, api, onConnectivity } from "./core/api.js";
-import { S, setMe, subscribe, emit } from "./core/store.js";
-import { initTelegram, inTelegram, haptic, tgUser } from "./core/tg.js";
-import { t, setLang, getLang, errText } from "./core/i18n.js";
-import { sfx } from "./core/sound.js";
-import { BOT_URL, POLL_ME_MS } from "./core/config.js";
-import { registerRouter } from "./core/router.js";
-import { h, toast } from "./ui/dom.js";
-import { errMsg } from "./ui/common.js";
-import { topbar } from "./ui/topbar.js";
-import { picker } from "./ui/picker.js";
-import { openBattleById } from "./ui/battle.js";
-import { mapScreen } from "./screens/map.js";
-import { baseScreen } from "./screens/base.js";
-import { armyScreen } from "./screens/army.js";
-import { researchScreen } from "./screens/research.js";
-import { rankScreen } from "./screens/rank.js";
+import { fetchConfig, api, onConnectivity } from "./core/api.js?v=2";
+import { S, setMe, subscribe, emit } from "./core/store.js?v=2";
+import { initTelegram, inTelegram, haptic, tgUser } from "./core/tg.js?v=2";
+import { t, setLang, getLang, errText } from "./core/i18n.js?v=2";
+import { sfx } from "./core/sound.js?v=2";
+import { BOT_URL, POLL_ME_MS } from "./core/config.js?v=2";
+import { registerRouter } from "./core/router.js?v=2";
+import { h, toast } from "./ui/dom.js?v=2";
+import { icon } from "./ui/icons.js?v=2";
+import { errMsg } from "./ui/common.js?v=2";
+import { topbar } from "./ui/topbar.js?v=2";
+import { picker } from "./ui/picker.js?v=2";
+import { openBattleById } from "./ui/battle.js?v=2";
+import { mapScreen } from "./screens/map.js?v=2";
+import { baseScreen } from "./screens/base.js?v=2";
+import { armyScreen } from "./screens/army.js?v=2";
+import { researchScreen } from "./screens/research.js?v=2";
+import { rankScreen } from "./screens/rank.js?v=2";
 
 const app = /** @type {HTMLElement} */ (document.getElementById("app"));
 const TABS = [
-  ["map", "🗺", "tab_map", mapScreen], ["base", "🏭", "tab_base", baseScreen], ["army", "🪖", "tab_army", armyScreen],
-  ["research", "🔬", "tab_research", researchScreen], ["rank", "🏆", "tab_rank", rankScreen],
+  ["map", "globe", "tab_map", mapScreen], ["base", "fort", "tab_base", baseScreen], ["army", "helmet", "tab_army", armyScreen],
+  ["research", "flask", "tab_research", researchScreen], ["rank", "trophy", "tab_rank", rankScreen],
 ];
 
 function landing(msg = "") {
   app.replaceChildren(h("div.picker", null, h("div.hero", { style: { paddingTop: "60px" } },
-    h("div.boot-logo", { style: { margin: "0 auto" } }, h("span", null, "🌍")), h("h1", null, "WORLD WAR ", h("b", null, "X")),
+    h("div.boot-logo", { style: { margin: "0 auto" } }, icon("globe")), h("h1", null, "WORLD WAR ", h("b", null, "X")),
     h("p.muted", null, t("open_in_tg")), h("p.small.dim", null, msg || t("open_in_tg_sub")),
-    h("a.btn.success.lg", { href: BOT_URL, style: { textDecoration: "none", marginTop: "12px" } }, "🎮 ", t("open_bot")))));
+    h("a.btn.success.lg", { href: BOT_URL, style: { textDecoration: "none", marginTop: "12px" } }, icon("swords"), t("open_bot")))));
 }
 
 let screenEl = /** @type {HTMLElement|null} */ (null), tabbar = /** @type {HTMLElement|null} */ (null);
@@ -40,7 +41,7 @@ function shell() {
 }
 function paintTabs() {
   if (!tabbar) return;
-  tabbar.replaceChildren(...TABS.map(([id, ic, label]) => h("button.tab" + (S.tab === id ? ".on" : ""), { onclick: () => go(id) }, h("span.ti", null, ic), t(/** @type {any} */ (label)))));
+  tabbar.replaceChildren(...TABS.map(([id, ic, label]) => h("button.tab" + (S.tab === id ? ".on" : ""), { onclick: () => go(id) }, h("span.ti", null, icon(/** @type {string} */ (ic))), h("span.tl", null, t(/** @type {any} */ (label))))));
 }
 /** @param {string} tab */
 function go(tab) {
@@ -66,13 +67,13 @@ subscribe((k) => {
   clearTimeout(nextTimer);
   if (ends.length) nextTimer = setTimeout(async () => { await syncMe(); sfx.coin(); haptic("medium"); }, Math.min(...ends) - Date.now() + 1200);
 });
-subscribe((k) => { if (k === "levelup") { sfx.levelup(); haptic("heavy"); toast(`⭐ ${t("level_up")} ${S.me.level}`, "ok"); } });
+subscribe((k) => { if (k === "levelup") { sfx.levelup(); haptic("heavy"); toast([icon("star"), ` ${t("level_up")} ${S.me.level}`], "ok"); } });
 subscribe((k) => { if (k === "lang") { paintTabs(); const cur = S.tab; S.tab = ""; go(cur); } });
 
 let offlineEl = /** @type {HTMLElement|null} */ (null);
 onConnectivity((ok) => {
   if (ok) { offlineEl?.remove(); offlineEl = null; return; }
-  if (!offlineEl) { offlineEl = h("div.offline", null, "📡 ", t("offline")); document.body.append(offlineEl); }
+  if (!offlineEl) { offlineEl = h("div.offline", null, icon("signal"), " ", t("offline")); document.body.append(offlineEl); }
 });
 
 async function boot() {
@@ -97,6 +98,6 @@ async function boot() {
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") syncMe(); });
   // Alert sound if we were attacked since last visit.
   const seen = Number(localStorage.getItem("wwx_seen") || 0);
-  if (S.me.log?.some((x) => x.ts > seen && x.k.startsWith("attacked"))) { sfx.alarm(); haptic("heavy"); toast("🚨 " + t("notifications"), "err"); }
+  if (S.me.log?.some((x) => x.ts > seen && x.k.startsWith("attacked"))) { sfx.alarm(); haptic("heavy"); toast([icon("siren"), " ", t("notifications")], "err"); }
 }
 boot();

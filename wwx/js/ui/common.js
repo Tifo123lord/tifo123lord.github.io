@@ -1,11 +1,11 @@
 // @ts-check
-import { api, ApiError } from "../core/api.js";
-import { S, setMe, liveRes, countryOf } from "../core/store.js";
-import { RES_ICON } from "../core/config.js";
-import { errText, short, t, nm, dur } from "../core/i18n.js";
-import { notify } from "../core/tg.js";
-import { sfx } from "../core/sound.js";
-import { h, n, toast } from "./dom.js";
+import { api, ApiError } from "../core/api.js?v=2";
+import { S, setMe, liveRes, countryOf } from "../core/store.js?v=2";
+import { errText, short, t, nm, dur } from "../core/i18n.js?v=2";
+import { notify } from "../core/tg.js?v=2";
+import { sfx } from "../core/sound.js?v=2";
+import { h, n, toast } from "./dom.js?v=2";
+import { resIcon, flagImg, entIcon } from "./icons.js?v=2";
 
 /**
  * Runs a server action, applies the returned `me`, and surfaces errors uniformly.
@@ -36,16 +36,18 @@ export function errMsg(e) {
 /** Cost chips; unaffordable parts in red. @param {Record<string, number>} cost */
 export function costView(cost) {
   return h("div.cost", null, Object.entries(cost || {}).filter(([, v]) => v > 0).map(([k, v]) =>
-    h("span" + (liveRes(k) < v - 0.5 ? ".no" : ""), null, /** @type {any} */ (RES_ICON)[k], " ", n(short(v)))));
+    h("span.cc" + (liveRes(k) < v - 0.5 ? ".no" : ""), null, resIcon(k), n(short(v)))));
 }
-export const flagOf = (c) => countryOf(c)?.flag ?? "🏳️";
+/** Flag as an element (image with emoji fallback). Use flagText() inside plain strings. */
+export const flagOf = (c) => flagImg(c, countryOf(c)?.flag ?? "🏳️");
+export const flagText = (c) => countryOf(c)?.flag ?? "🏳️";
 export const countryName = (c) => { const x = countryOf(c); return x ? nm(x) : c; };
 /** @param {Record<string, number>} b */
 export const bonusText = (b) => Object.entries(b || {}).map(([k, v]) => `\u2066+${Math.round(v * 100)}%\u2069 ${t(/** @type {any} */ ("n_" + k))}`).join(" · ");
-/** Unit icon list "🪖12 🛡️3" @param {Record<string, number>} u */
+/** Unit icon list (icon + count chips). @param {Record<string, number>} u */
 export function unitList(u) {
-  const parts = Object.entries(u || {}).filter(([, v]) => v > 0).map(([id, v]) => `${S.cfg.UNITS.find((x) => x.id === id)?.icon ?? "?"}${short(v)}`);
-  return parts.length ? parts.join("  ") : "—";
+  const parts = Object.entries(u || {}).filter(([, v]) => v > 0).map(([id, v]) => h("span.uchip", null, entIcon(S.cfg.UNITS.find((x) => x.id === id) ?? { icon: "?" }), n(short(v))));
+  return parts.length ? h("span.ulist", null, parts) : "—";
 }
 /** Progress bar for a queue item. @param {number} end @param {number} total seconds */
 export function queueBar(end, total, cls = "") {
